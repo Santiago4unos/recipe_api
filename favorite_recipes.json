@@ -1,0 +1,24 @@
+[
+    {
+        "id": 1,
+        "name": "Pork chops stuffed with tomatoes and spinach",
+        "author": "Santiago Muñoz",
+        "image_link": "https://img.spoonacular.com/recipes/656741-556x370.jpg",
+        "recipe": [
+            "Primero esto",
+            "Luego esto",
+            "Y finalmente esto"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Pork chops stuffed with tomatoes and spinach",
+        "author": "Santiago Muñoz",
+        "image_link": "https://img.spoonacular.com/recipes/656741-556x370.jpg",
+        "recipe": [
+            "Primero esto",
+            "Luego esto",
+            "Y finalmente esto"
+        ]
+    }
+]
