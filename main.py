@@ -118,7 +118,7 @@ def get_recipe(id: int):
     summary="Creates a recipe in the app"
     )
 
-def create_recipe(recipe: Recipe = Body(...)):
+def create_recipe(recipe: Recipe | str = Body(...)):
     """
     Create Recipe
 
@@ -130,6 +130,9 @@ def create_recipe(recipe: Recipe = Body(...)):
 
     Returns a recipe model with id, title, author, image link and instructions
     """
+    if type(recipe) == str:
+        recipe = json.loads(recipe)
+        return write_json("favorite_recipes", recipe)
     return write_json("recipes", recipe.model_dump())
 
 @app.delete(
@@ -166,7 +169,7 @@ def get_all_favorite_recipes():
     status_code=status.HTTP_201_CREATED,
     tags=["Recipes", "Favorites"]
 )
-def post_favorite_recipe(recipe: Recipe = Body(...)):
+def post_favorite_recipe(recipe: Recipe | str = Body(...)):
     """
     Post a favorite recipe
 
@@ -174,10 +177,13 @@ def post_favorite_recipe(recipe: Recipe = Body(...)):
 
     Parameters:
     - Request body parameter:
-        - **recipe: Recipe** -> A recipe model with id, title, author, image link and instructions
+        - **recipe: Recipe | str** -> A recipe model with id, title, author, image link and instructions or a stringified json
 
     Returns the recipe added
     """
+    if type(recipe) == str:
+        recipe = json.loads(recipe)
+        return write_json("favorite_recipes", recipe)
     return write_json("favorite_recipes", recipe.model_dump())
 
 
