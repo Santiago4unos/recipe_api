@@ -24,7 +24,6 @@ def get_recipes(filename) -> None:
 def write_json(filename: str, recipe: dict) -> dict:
     with open(f"{filename}.json", "r+", encoding="utf-8") as f:
         recipes: list[dict] = json.load(f)
-        recipe["id"] = len(recipes) + 1
         recipe["image_link"] = str(recipe["image_link"])
         recipes.append(recipe)
         f.seek(0)
