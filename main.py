@@ -8,10 +8,8 @@ from pydantic import (
 
 #FastAPI
 from fastapi import (
-    FastAPI, Body, Query, Path,
-    Form, Header, Cookie,
-    File, status, UploadFile, 
-    HTTPException
+    FastAPI, Body, 
+    status, HTTPException
     )
 import uvicorn
 
@@ -154,6 +152,15 @@ def delete_recipe(id: int):
     return delete_from_json("recipes", id)
 
 # Favorites
+@app.get(
+    "/recipe/favorites/all",
+    status_code=status.HTTP_200_OK,
+    tags=["Recipes", "Favorites"]
+)
+def get_all_favorite_recipes():
+    return get_recipes("favorite_recipes")
+
+
 @app.post(
     "/recipe/favorites/new",
     status_code=status.HTTP_201_CREATED,
