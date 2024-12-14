@@ -116,7 +116,11 @@ def get_recipe(id: int):
             return recipe
     raise HTTPException(status_code=404, detail="Recipe not found")
 
-@app.post("/upload-image/")
+@app.post(
+        path="/upload-image/",
+        tags=["Images"],
+        status_code=status.HTTP_201_CREATED
+        )
 async def upload_image(file: UploadFile = File(...)):
     """
     Upload an image
