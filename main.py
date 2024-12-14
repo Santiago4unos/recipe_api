@@ -1,5 +1,8 @@
 #Python
 import json
+import shutil
+import os
+import uuid
 
 #Pydantic
 from pydantic import (
@@ -8,12 +11,16 @@ from pydantic import (
 
 #FastAPI
 from fastapi import (
-    FastAPI, Body, 
-    status, HTTPException
+    FastAPI, Body, status, 
+    HTTPException, UploadFile, File
     )
+
 import uvicorn
 
 app = FastAPI()
+
+UPLOAD_FOLDER = "uploaded_images"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def get_recipes(filename) -> None: 
     with open(f"{filename}.json", "r", encoding="utf-8") as f:
@@ -108,6 +115,29 @@ def get_recipe(id: int):
         if recipe["id"] == id:
             return recipe
     raise HTTPException(status_code=404, detail="Recipe not found")
+
+@app.post("/upload-image/")
+async def upload_image(file: UploadFile = File(...)):
+    """
+    Upload an image
+
+    This path operation uploads an image
+
+    Parameters:
+    - Form Data parameter:
+        - **file: UploadFile** -> The image to be uploaded
+
+    Returns a JSON object with a key "url" containing the URL
+    of the uploaded image
+    """
+    file_extension = file.filename.split(".")[-1]
+    file_name = f"{uuid.uuid4()}.{file_extension}"
+    file_path = os.path.join(UPLOAD_FOLDER, file_name)
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    return {"url": f"https://recipe-api-w5qm.onrender.com/{UPLOAD_FOLDER}/{file_name}"}
 
 @app.post(
     path="/recipe/new",
