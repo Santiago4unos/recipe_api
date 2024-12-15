@@ -168,7 +168,7 @@ def create_recipe(recipe: Recipe | str = Body(...)):
     """
     if type(recipe) == str:
         recipe = json.loads(recipe)
-        return write_json("favorite_recipes", recipe)
+        return write_json("recipes", recipe)
     return write_json("recipes", recipe.model_dump())
 
 @app.delete(
