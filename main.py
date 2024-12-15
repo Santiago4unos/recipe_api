@@ -14,6 +14,7 @@ from fastapi import (
     FastAPI, Body, status, 
     HTTPException, UploadFile, File
     )
+from fastapi.staticfiles import StaticFiles
 
 import uvicorn
 
@@ -142,6 +143,8 @@ async def upload_image(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
 
     return {"url": f"https://recipe-api-w5qm.onrender.com/{UPLOAD_FOLDER}/{file_name}"}
+
+app.mount("/uploaded_images", StaticFiles(directory=UPLOAD_FOLDER), name="images")
 
 @app.post(
     path="/recipe/new",
